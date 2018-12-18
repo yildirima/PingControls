@@ -48,8 +48,8 @@ def query_results(xtns, Username, Password, querystring):
 
 
 xtns = '(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=192.168.230.101)(Port=1521))(CONNECT_DATA=(SID=DBUCM)))'
-Username = 'ucmdb_admin'
-Password = 'Keciler123!'
+Username = 'Test'
+Password = 'Test!'
 querystring = 'SELECT A_DISPLAY_LABEL HOSTNAME,A_IP_ADDRESS_VALUE IP,A_PLATFORMS_X PLATFORM, A_ENVIRONMENT_X ENVIRONMENT from UCMDB.CDM_UNIX_1 WHERE A_IP_ADDRESS_VALUE IS NOT NULL or  A_DISPLAY_LABEL IS NOT NULL'
 numberThreads = 12
 
