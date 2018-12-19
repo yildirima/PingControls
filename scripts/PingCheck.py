@@ -11,12 +11,12 @@ def send_alert(severity, ipaddr, hostname, platform, environment, status):
     print(opcmsg_int_run)
     #opcmsg_int = os.system(opcmsg_int_run)
 def controlIP(ip):
-    ipaddr = ip[1]
-    hostname = ip[0]
-    platform = ip[2]
-    environment = ip[3]
+    ipaddr = str(ip[1]).strip()
+    hostname = str(ip[0]).strip()
+    platform = str(ip[2]).strip()
+    environment = str(ip[3]).strip()
     alertbasepath = '/appdata/Control/PING/output/'
-    if ('None' not in str(ipaddr)):
+    if ('None' not in str(ipaddr) and '.' in ipaddr):
         if 'Test' in environment or 'Development' in environment:
             severity = 'Major'
         elif 'Production' in environment or 'PreProduction' in environment or 'Disaster' in environment:
@@ -54,7 +54,7 @@ querystring = 'SELECT A_DISPLAY_LABEL HOSTNAME,A_IP_ADDRESS_VALUE IP,A_PLATFORMS
 numberThreads = 12
 
 #IPList = query_results(xtns, Username, Password, querystring)
-IPList = ([['bkmallinone1',  '8.8.8.8',  'Ticketis', 'Production'],
+IPList = ([['bkmallinone1',  '',  'Ticketis', 'Production'],
            ['bkmallinone2',  '8.8.4.4',  'Ticketis', 'Production'],
            ['bkmallinone3',  '192.168.180.2',  'Ticketis', 'Test'],
            ['bkmallinone4',  '92.168.180.3',  'Ticketis', 'Test'],
