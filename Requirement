@@ -1,0 +1,4 @@
+**Modules**
+- cx_Oracle
+- subprocess
+- mp
