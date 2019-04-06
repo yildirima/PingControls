@@ -1,4 +1,1 @@
-**Modules**
-- cx_Oracle
-- subprocess
-- mp
+cx_Oracle==7.1.2
