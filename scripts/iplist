@@ -1,0 +1,4 @@
+127.0.0.1,hostname1,APP,Test
+192.168.1.25,localip,APP,Production
+8.8.8.32,googledns,DNS,Development
+192.168.1.25,Welcome,WEB,Disaster
