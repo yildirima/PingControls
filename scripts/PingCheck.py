@@ -28,7 +28,7 @@ def controlIP(ip):
     environment = str(ip[3]).strip()
     alertbasepath = '/tmp/test/'
     ExIPList = read_csv('excludeiplist')
-    if ('None' not in str(ipaddr) and '.' in str(ipaddr) and ipaddr not in ExIPList[0]):
+    if ('None' not in str(ipaddr) and '.' in str(ipaddr) and str(ipaddr) not in str(ExIPList)):
         if 'Test' in environment or 'Development' in environment:
             severity = 'Major'
         elif 'Production' in environment or 'PreProduction' in environment or 'Disaster' in environment:
