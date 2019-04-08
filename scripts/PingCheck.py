@@ -86,7 +86,7 @@ def main_function():
             username = config.get('DB', 'DB_USERNAME')
             password = config.get('DB', 'DB_PASSWORD')
             querystring = config.get('DB', 'QUERY')
-            IPList = query_results(xtns, Username, Password, querystring)
+            IPList = query_results(xtns, username, password, querystring)
             p = mp.Pool(numberThreads)
             IPout = p.map(controlIP, IPList)
             p.close()
