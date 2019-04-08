@@ -10,9 +10,9 @@ import multiprocessing as mp
 def send_alert(severity, ipaddr, hostname, platform, environment, status):
     msg_txt = (f"Alert Type:Ping_Control Hostnamme={hostname} "
                f"Ipaddress={ipaddr} Platform={platform} environment={environment} Status={status}  !!!")
-    opcmsg_int_run = (f"opcmsg s={severity} a='{hostname}' o='{hostname}' msg_text='{msg_txt}' node=monitorserverp00")
+    opcmsg_int_run = (f"/opt/OV/bin/opcmsg a={hostname} o={hostname} severity={severity} msg_text='{msg_txt}' node=monitorserverp00")
     print(opcmsg_int_run)
-    #opcmsg_int = os.system(opcmsg_int_run)
+    opcmsg_int = os.system(opcmsg_int_run)
 
 
 def read_csv(csvreadfile):
@@ -26,33 +26,33 @@ def controlIP(ip):
     hostname = str(ip[1]).strip()
     platform = str(ip[2]).strip()
     environment = str(ip[3]).strip()
-    alertbasepath = '/tmp/test/'
+    alertbasepath = '/appdata/Control/PING/output/'
     ExIPList = read_csv('excludeiplist')
     if ('None' not in str(ipaddr) and '.' in str(ipaddr) and str(ipaddr) not in str(ExIPList)):
         if 'Test' in environment or 'Development' in environment:
-            severity = 'Major'
+            severity = 'major'
         elif 'Production' in environment or 'PreProduction' in environment or 'Disaster' in environment:
-            severity = 'Critical'
+            severity = 'critical'
         else:
-            severity = 'Minor'
+            severity = 'minor'
         with open(os.devnull, "w") as fnull:
             if subprocess.call(['/bin/ping', "-c", "1", "-l", "1", "-s", "1", "-W", "1", str(ipaddr)],
                                stdout=fnull, stderr=fnull) == 0:
                 alertfilepath = alertbasepath + severity + '_' + ipaddr
                 ##check controlled ip address
-                print('host %s is Up. Hostname : %s Platform: %s severity: %s' % (ipaddr, hostname, platform, "OK"))
+                #print('host %s is Up. Hostname : %s Platform: %s severity: %s' % (ipaddr, hostname, platform, "OK"))
                 if os.path.isfile(alertfilepath):
-                    print('host %s is UP-Alert Clear' % ipaddr)
-                    #send_alert('Normal', ipaddr, hostname, platform, environment, 'Clear')
-                    #subprocess.call(['/bin/rm', alertfilepath], stdout=fnull, stderr=fnull)
+                    #print('host %s is UP-Alert Clear' % ipaddr)
+                    send_alert('normal', ipaddr, hostname, platform, environment, 'Clear')
+                    subprocess.call(['/bin/rm', alertfilepath], stdout=fnull, stderr=fnull)
             else:
                 alertfilepath = alertbasepath + severity + '_' + ipaddr
                 if os.path.isfile(alertfilepath):
-                    print('host %s is DOWN-Alert OK' % ipaddr)
+                    print('host %s is DOWN and Alert already Created' % ipaddr)
                 else:
-                    print('host %s is DOWN-Alert Create. Server : %s admins: %s severity: %s' % (ipaddr, hostname, platform, severity))
-                    #subprocess.call(['/usr/bin/touch', alertfilepath], stdout=fnull, stderr=fnull)
-                    #send_alert(severity, ipaddr, hostname, platform, environment, 'Failed')
+                    #print('host %s is DOWN-Alert Create. Server : %s admins: %s severity: %s' % (ipaddr, hostname, platform, severity))
+                    subprocess.call(['/usr/bin/touch', alertfilepath], stdout=fnull, stderr=fnull)
+                    send_alert(severity, ipaddr, hostname, platform, environment, 'Failed')
 
 
 def parser_arg():
